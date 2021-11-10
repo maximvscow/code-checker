@@ -1,3 +1,4 @@
 db.sqlite
 .idea/
 __pycache__/
+test.py
