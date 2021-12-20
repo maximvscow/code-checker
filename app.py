@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort,
+from flask import Flask, jsonify, request, abort
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
@@ -126,8 +126,9 @@ def get_code():                               # Для запуска необх
     except Exception as e:
         abort(500)
 
- @app.errorhandler(500)
- def err_handler(e):
+
+@app.errorhandler(500)
+def err_handler(e):
     err_msg = {
         'type': 'error',
         'msg': 'Sorry, unexpected error'
