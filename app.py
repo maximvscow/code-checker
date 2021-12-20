@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort,
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from flask_jwt_extended import JWTManager, jwt_required
 from config import Config
 import json, base64, subprocess, sys
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,6 +25,7 @@ jwt = JWTManager(app)
 from models import *
 
 Base.metadata.create_all(bind=engine)
+
 
 # CRUD - операции
 
@@ -108,19 +110,29 @@ def logon():
 
 @app.route('/test', methods=['GET', 'POST'])  # Роут для запуска тестируемого кода из JSON с параметром base64str
 def get_code():                               # Для запуска необходимо создать venv2
-    req = base64.b64decode(request.json["base64str"])
-    with open('test.py', 'w') as f:
-        f.write(req.decode("UTF-8"))
-    execute = subprocess.Popen(["venv2/Scripts/python.exe", "test.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    outs, errs = execute.communicate()
-    rc = execute.returncode
-    outs = outs.decode('UTF-8')
-    errs = errs.decode('UTF-8')
-    result = {
-        'output': outs,
-        'errors': errs
+    try:
+        req = base64.b64decode(request.json["base64str"])
+        with open('test.py', 'w') as f:
+            f.write(req.decode("UTF-8"))
+        execute = subprocess.Popen(["venv2/Scripts/python.exe", "test.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        outs, errs = execute.communicate()
+        outs = outs.decode('UTF-8')
+        errs = errs.decode('UTF-8')
+        result = {
+            'output': outs,
+            'errors': errs
+        }
+        return jsonify(result)
+    except Exception as e:
+        abort(500)
+
+ @app.errorhandler(500)
+ def err_handler(e):
+    err_msg = {
+        'type': 'error',
+        'msg': 'Sorry, unexpected error'
     }
-    return jsonify(result)
+    return err_msg
 
 
 @app.teardown_appcontext
