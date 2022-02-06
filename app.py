@@ -5,7 +5,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from flask_jwt_extended import JWTManager, jwt_required
 from config import Config
-import json, base64, subprocess, sys
+import json, base64, subprocess, sys, time, datetime
+import timeit
 import time
 
 
@@ -33,7 +34,7 @@ Base.metadata.create_all(bind=engine)
 
 @app.route('/register', methods=['POST'])
 def register():
-    params = request.json
+    params = request.get_json(force=True)
     user = User(**params)
     session.add(user)
     session.commit()
@@ -43,27 +44,31 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def logon():
-    params = request.json
+    params = request.get_json(force=True)
     user = User.authenticate(**params)
     token = user.get_token()
     return {'access_token': token}
 
 
-@app.route('/test', methods=['GET', 'POST'])  # Роут для запуска тестируемого кода из JSON с параметром base64str
+@app.route('/chek', methods=['GET', 'POST'])  # Роут для запуска тестируемого кода из JSON с параметром base64str
+@jwt_required()
 def get_code():                               # Для запуска необходимо создать venv2
     try:
         req = base64.b64decode(request.json["base64str"])
         with open('test.py', 'w') as f:
             f.write(req.decode("UTF-8"))
-        test_starts = time.time()
+        start = time.time()
         execute = subprocess.Popen(["venv2/Scripts/python.exe", "test.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        time_taken = (time.time() - start)
         outs, errs = execute.communicate()
         outs = outs.decode('UTF-8')
         errs = errs.decode('UTF-8')
         result = {
             'output': outs,
-            'errors': errs
+            'errors': errs,
+            'time_taken': time_taken
         }
+        execute.terminate()
         return jsonify(result)
     except Exception as e:
         abort(500)
@@ -84,4 +89,4 @@ def shutdown_session(exception=None):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

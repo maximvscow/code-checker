@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "c40b84f3-79ff-4142-ba65-0dcaac564060",
+		"name": "code_cheker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:5000/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"user@ru\",\r\n    \"password\": \"password\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"user@ru\",\r\n    \"password\": \"password\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/test",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0NDE2MDE1OSwianRpIjoiZWQ3Yjc3MTUtYTVhMy00NDdkLThkYjctNGJhMWJjY2FhODFlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjQ0MTYwMTU5LCJleHAiOjE2NDYyMzM3NTl9.5CugYstl81cPTHoFG622SaLMKtLP6JtsUJwrJXt1YfM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"base64str\": \"ZnJvbSByYW5kb20gaW1wb3J0IHJhbmRpbnQKIApOID0gMTAKYSA9IFtdCmZvciBpIGluIHJhbmdlKE4pOgogICAgYS5hcHBlbmQocmFuZGludCgxLCA5OSkpCnByaW50KGEpCiAKIApmb3IgaSBpbiByYW5nZShOLTEpOgogICAgZm9yIGogaW4gcmFuZ2UoTi1pLTEpOgogICAgICAgIGlmIGFbal0gPiBhW2orMV06CiAgICAgICAgICAgIGFbal0sIGFbaisxXSA9IGFbaisxXSwgYVtqXQogCnByaW50KGEp\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/test",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
