@@ -1,4 +1,4 @@
-# Code-cheker
+# Code-checker
 
 Работает для кода на python
 
