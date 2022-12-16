@@ -50,7 +50,7 @@ def logon():
     return {'access_token': token}
 
 
-@app.route('/chek', methods=['GET', 'POST'])  # Роут для запуска тестируемого кода из JSON с параметром base64str
+@app.route('/check', methods=['GET', 'POST'])  # Роут для запуска тестируемого кода из JSON с параметром base64str
 @jwt_required()
 def get_code():                               # Для запуска необходимо создать venv2
     try:
